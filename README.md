@@ -1,92 +1,276 @@
-# scc210-2324-grp-55
+# PowerPoint Clone - Java Swing Presentation Editor
 
+A feature-rich presentation editor built with Java Swing that mimics core PowerPoint functionality. Create, edit, and present slides with text boxes, images, drawing tools, and customizable formatting options.
 
+Developed as a GUI application demonstrating advanced Java Swing components, event handling, file I/O with JSON serialization, and custom component design.
 
-## Getting started
+---
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Features
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### Slide Editing
+- Drag-and-drop positioning for all slide elements
+- Real-time visual feedback with selection borders
+- Multi-threaded UI for smooth interactions
+- Dynamic slide canvas with automatic layout management
+- Notes panel for speaker annotations
 
-## Add your files
+### Text Management
+- Insert and position text boxes anywhere on slides
+- Right-click context menu for formatting options
+- Custom font chooser dialog (family, style, size)
+- Color picker for text customization
+- Auto-resizing text boxes based on content
+- Text justification (left, center, right)
+- Subscript and superscript support
+- Bold, italic, and underline formatting
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+### Image Handling
+- Insert images from file system via file chooser
+- Drag images to reposition on slides
+- Manual resize controls with width/height spinners
+- Maintains aspect ratio options
+- Supports common image formats (PNG, JPEG)
+- Image serialization with file path references
 
-```
-cd existing_repo
-git remote add origin http://scc-source.lancs.ac.uk/scc210-2023-24/scc210-2324-grp-55.git
-git branch -M main
-git push -uf origin main
-```
+### Drawing Tools
+- Freehand pencil drawing mode
+- Geometric shapes: lines, circles, squares
+- Click-and-drag shape creation
+- Drag existing shapes to reposition
+- Eraser tool to remove drawn elements
+- Real-time shape preview during creation
+- Path-based drawing for smooth curves
 
-## Integrate with your tools
+### File Operations
+- Save presentations to JSON format
+- Open existing presentations with full state restoration
+- Save As functionality for creating copies
+- Automatic serialization of:
+  - Text box positions, fonts, colors, and content
+  - Image positions, dimensions, and file paths
+  - All drawing elements (future enhancement)
+- Create new blank presentations
 
-- [ ] [Set up project integrations](http://scc-source.lancs.ac.uk/scc210-2023-24/scc210-2324-grp-55/-/settings/integrations)
+### User Interface
+- Vertical menu bar with categorized options
+- File, Edit, Home, Insert, Tools, Present, Help menus
+- Resize controls with increment/decrement spinners
+- Checkbox toggles for width/height resizing
+- Startup screen for project management
+- Modal dialogs for font and color selection
 
-## Collaborate with your team
+---
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## Project Structure
 
-## Test and Deploy
+- `Driver.java` — Application entry point, launches startup screen
+- `StartupScreen.java` — Initial window for creating/opening presentations
+- `EditMenu.java` — Main editor window (JFrame) containing slide canvas and controls
+- `Slide.java` — Custom JPanel for slide content with drawing capabilities
+- `DraggablePanel.java` — Base class for draggable UI components
+- `SlideTextbox.java` — Editable text box component extending DraggablePanel
+- `SlideImage.java` — Image component with resize functionality
+- `SideMenu.java` — Vertical menu bar with all menu items and action listeners
+- `VerticalMenuBar.java` — Custom JMenuBar with vertical grid layout
+- `TextAttributes.java` — Popup menu for text formatting (font, color)
+- `JFontChooser.java` — Custom font selection dialog
+- `Notes.java` — Speaker notes panel component
+- `PresentingView.java` — Presentation mode view (future enhancement)
+- `ToolMenu.java` — Additional tools menu (placeholder)
+- `ExpandableButtonDrop.java` — Expandable dropdown button component (utility)
 
-Use the built-in continuous integration in GitLab.
+---
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+## Requirements
 
-***
+Java Development Kit (JDK) 8 or newer
 
-# Editing this README
+External Libraries:
+- org.json (JSON parsing and serialization)
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Standard Java Libraries:
+- javax.swing (GUI components)
+- java.awt (Graphics and event handling)
+- java.io (File operations)
+- javax.imageio (Image loading)
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+---
 
-## Name
-Choose a self-explaining name for your project.
+## Build and Run Instructions
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+1. Clone the repository:
+   git clone https://github.com/acetrow/presentation-software.git
+   cd presentation-software
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+2. Ensure JDK is installed:
+   java -version
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+3. Download org.json library:
+   Download json-20240303.jar (or latest) from https://mvnrepository.com/artifact/org.json/json
+   Place in project lib/ directory
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+4. Compile the project:
+   javac -cp ".:lib/json-20240303.jar" *.java
+
+   On Windows:
+   javac -cp ".;lib/json-20240303.jar" *.java
+
+5. Run the application:
+   java -cp ".:lib/json-20240303.jar" Driver
+
+   On Windows:
+   java -cp ".;lib/json-20240303.jar" Driver
+
+---
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Creating a New Presentation
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+1. Launch the application using Driver.java
+2. Click "Create new presentation" on startup screen
+3. The main editor window opens with blank slide canvas
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Adding Text Boxes
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+1. Navigate to Insert → Insert Text Box
+2. A text box appears at default position (20, 20)
+3. Click and drag to reposition
+4. Click inside to edit text content
+5. Right-click for formatting options:
+   - Change Font (opens font chooser)
+   - Change Colour (opens color picker)
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+### Inserting Images
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+1. Navigate to Insert → Insert Image
+2. Select image file from file chooser dialog
+3. Image appears on slide with default dimensions
+4. Click and drag to reposition
+5. Use resize controls to adjust dimensions:
+   - Click + button to enlarge
+   - Click - button to shrink
+   - Set increment value with spinner
+   - Toggle Width/Height checkboxes
+
+### Using Drawing Tools
+
+Lines:
+1. Navigate to Tools → Insert Line
+2. Click and drag to create line
+3. Release to finalize
+
+Circles:
+1. Navigate to Tools → Insert Circle
+2. Click and drag to create circular shape
+3. Release to finalize
+
+Squares:
+1. Navigate to Tools → Insert Square
+2. Click and drag to create square
+3. Maintains equal width/height ratio
+
+Freehand Drawing:
+1. Navigate to Tools → Draw
+2. Click and drag to draw freehand paths
+3. Click Draw again to toggle off
+
+Eraser:
+1. Navigate to Tools → Erase
+2. Click and drag over elements to remove
+3. Works on lines, circles, squares, and paths
+
+### Saving and Opening
+
+Save:
+1. Navigate to File → Save (or Save As for first save)
+2. Choose location and filename in file dialog
+3. Presentation saved as .json file
+
+Open:
+1. Navigate to File → Open
+2. Select .json presentation file
+3. All text boxes, images, and formatting restored
+
+---
+
+## Implementation Details
+
+### Drag-and-Drop System
+- MouseAdapter listeners on DraggablePanel base class
+- mousePressed captures initial click coordinates
+- mouseDragged calculates offset and updates component location
+- All slide elements inherit drag functionality
+
+### JSON Serialization Format
+
+{
+  "textBoxes": [
+    {
+      "xPosition": 20,
+      "yPosition": 50,
+      "fontName": "Arial",
+      "fontStyle": 0,
+      "fontSize": 14,
+      "content": "Sample text",
+      "colorRed": 0,
+      "colorGreen": 0,
+      "colorBlue": 0
+    }
+  ],
+  "images": [
+    {
+      "xPosition": 100,
+      "yPosition": 100,
+      "width": 200,
+      "height": 150,
+      "path": "/absolute/path/to/image.png"
+    }
+  ]
+}
+
+### Drawing Architecture
+- Slide maintains ArrayLists for shapes: lines, circles, squares, paths
+- paintComponent() iterates and renders all shapes
+- Mouse listeners handle shape creation and manipulation
+- Graphics2D for smooth rendering
+- Shape selection and dragging via contains() checking
+
+### Event Handling Pattern
+- Action listeners attached to menu items
+- Events propagate from SideMenu to EditMenu
+- EditMenu delegates to Slide for drawing operations
+- Observer pattern for UI updates
+
+---
+
+## Known Limitations
+
+- Drawing elements (lines, circles, squares, paths) are not yet serialized
+- Presentation mode (PresentingView) is incomplete
+- Single slide only - no multi-slide support
+- No undo/redo functionality implemented
+- Copy/paste features not implemented
+- Spell check menu item not functional
+- No animation or transition effects
+
+---
+
+## Future Enhancements
+
+- Multi-slide presentations with slide navigation
+- Drawing element serialization to JSON
+- Full presentation mode with slide show controls
+- Undo/redo stack implementation
+- Clipboard operations (copy/paste)
+- Slide thumbnails panel
+- Export to PDF or image formats
+- Animation effects and transitions
+- Collaborative editing features
+
+---
 
 ## License
-For open source projects, say how it is licensed.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This project is released under the MIT License.
