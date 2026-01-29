@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 public class Slide extends JPanel {
@@ -30,6 +32,8 @@ public class Slide extends JPanel {
 
 
     public Slide() {
+        setLayout(null); // Use null layout for absolute positioning
+        setBackground(Color.WHITE);
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         // Mouse listener to handle the start of a shape or path
@@ -197,10 +201,132 @@ public class Slide extends JPanel {
         isPencilMode = false;
     }
 
+    public void clearDrawings() {
+        lines.clear();
+        circles.clear();
+        squares.clear();
+        paths.clear();
+        currentLine = null;
+        currentCircle = null;
+        currentSquare = null;
+        currentPath = null;
+        repaint();
+    }
+
+    public JSONObject exportDrawingsToJson() {
+        JSONObject out = new JSONObject();
+
+        JSONArray jLines = new JSONArray();
+        for (Line2D.Double l : lines) {
+            JSONObject o = new JSONObject();
+            o.put("x1", l.getX1());
+            o.put("y1", l.getY1());
+            o.put("x2", l.getX2());
+            o.put("y2", l.getY2());
+            jLines.put(o);
+        }
+        out.put("lines", jLines);
+
+        JSONArray jCircles = new JSONArray();
+        for (Ellipse2D.Double c : circles) {
+            JSONObject o = new JSONObject();
+            o.put("x", c.getX());
+            o.put("y", c.getY());
+            o.put("w", c.getWidth());
+            o.put("h", c.getHeight());
+            jCircles.put(o);
+        }
+        out.put("circles", jCircles);
+
+        JSONArray jSquares = new JSONArray();
+        for (Rectangle2D.Double r : squares) {
+            JSONObject o = new JSONObject();
+            o.put("x", r.getX());
+            o.put("y", r.getY());
+            o.put("w", r.getWidth());
+            o.put("h", r.getHeight());
+            jSquares.put(o);
+        }
+        out.put("squares", jSquares);
+
+        // Paths as list of points (flattened)
+        JSONArray jPaths = new JSONArray();
+        for (Path2D.Double p : paths) {
+            JSONArray pts = new JSONArray();
+            PathIterator it = p.getPathIterator(null, 1.0);
+            double[] coords = new double[6];
+            while (!it.isDone()) {
+                int type = it.currentSegment(coords);
+                if (type == PathIterator.SEG_MOVETO || type == PathIterator.SEG_LINETO) {
+                    JSONObject pt = new JSONObject();
+                    pt.put("x", coords[0]);
+                    pt.put("y", coords[1]);
+                    pts.put(pt);
+                }
+                it.next();
+            }
+            jPaths.put(pts);
+        }
+        out.put("paths", jPaths);
+
+        return out;
+    }
+
+    public void importDrawingsFromJson(JSONObject drawings) {
+        clearDrawings();
+        if (drawings == null) return;
+
+        JSONArray jLines = drawings.optJSONArray("lines");
+        if (jLines != null) {
+            for (int i = 0; i < jLines.length(); i++) {
+                JSONObject o = jLines.getJSONObject(i);
+                lines.add(new Line2D.Double(o.getDouble("x1"), o.getDouble("y1"), o.getDouble("x2"), o.getDouble("y2")));
+            }
+        }
+
+        JSONArray jCircles = drawings.optJSONArray("circles");
+        if (jCircles != null) {
+            for (int i = 0; i < jCircles.length(); i++) {
+                JSONObject o = jCircles.getJSONObject(i);
+                circles.add(new Ellipse2D.Double(o.getDouble("x"), o.getDouble("y"), o.getDouble("w"), o.getDouble("h")));
+            }
+        }
+
+        JSONArray jSquares = drawings.optJSONArray("squares");
+        if (jSquares != null) {
+            for (int i = 0; i < jSquares.length(); i++) {
+                JSONObject o = jSquares.getJSONObject(i);
+                squares.add(new Rectangle2D.Double(o.getDouble("x"), o.getDouble("y"), o.getDouble("w"), o.getDouble("h")));
+            }
+        }
+
+        JSONArray jPaths = drawings.optJSONArray("paths");
+        if (jPaths != null) {
+            for (int i = 0; i < jPaths.length(); i++) {
+                JSONArray pts = jPaths.getJSONArray(i);
+                if (pts.length() == 0) continue;
+                Path2D.Double path = new Path2D.Double();
+                for (int j = 0; j < pts.length(); j++) {
+                    JSONObject pt = pts.getJSONObject(j);
+                    double x = pt.getDouble("x");
+                    double y = pt.getDouble("y");
+                    if (j == 0) path.moveTo(x, y);
+                    else path.lineTo(x, y);
+                }
+                paths.add(path);
+            }
+        }
+
+        repaint();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        // Draw shapes first (behind components)
         for (Line2D.Double line : lines) {
             g2.draw(line);
         }
@@ -210,6 +336,11 @@ public class Slide extends JPanel {
         for (Rectangle2D.Double square : squares) {
             g2.draw(square);
         }
+        for (Path2D.Double path : paths) {
+            g2.draw(path);
+        }
+        
+        // Draw current shape being drawn
         if (currentLine != null) {
             g2.draw(currentLine);
         }
@@ -219,13 +350,14 @@ public class Slide extends JPanel {
         if (currentSquare != null) {
             g2.draw(currentSquare);
         }
-
-
-        for (Path2D.Double path : paths) {
-            g2.draw(path);
-        }
         if (currentPath != null) {
             g2.draw(currentPath);
         }
+    }
+    
+    @Override
+    public void paintChildren(Graphics g) {
+        // Ensure child components (text boxes, images) are painted on top of shapes
+        super.paintChildren(g);
     }
 }

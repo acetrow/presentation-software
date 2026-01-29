@@ -1,276 +1,346 @@
 # PowerPoint Clone - Java Swing Presentation Editor
 
-A feature-rich presentation editor built with Java Swing that mimics core PowerPoint functionality. Create, edit, and present slides with text boxes, images, drawing tools, and customizable formatting options.
+A comprehensive presentation editor built with Java Swing that provides PowerPoint-like functionality. Create, edit, and present multi-slide presentations with rich text formatting, images, drawing tools, and a professional user interface.
 
-Developed as a GUI application demonstrating advanced Java Swing components, event handling, file I/O with JSON serialization, and custom component design.
+![Java](https://img.shields.io/badge/Java-19-orange) ![License](https://img.shields.io/badge/License-MIT-blue)
 
 ---
 
 ## Features
 
-### Slide Editing
-- Drag-and-drop positioning for all slide elements
-- Real-time visual feedback with selection borders
-- Multi-threaded UI for smooth interactions
-- Dynamic slide canvas with automatic layout management
-- Notes panel for speaker annotations
+### Multi-Slide Support
+- **Add/Remove slides** - Create presentations with multiple slides
+- **Slide navigation** - Navigate between slides using buttons or thumbnail panel
+- **Slide thumbnails** - Visual preview panel on the left (PowerPoint-style)
+- **Slide management** - Each slide maintains its own content, formatting, and drawings
+- **Automatic saving** - All slides are saved and restored from JSON format
 
-### Text Management
-- Insert and position text boxes anywhere on slides
-- Right-click context menu for formatting options
-- Custom font chooser dialog (family, style, size)
-- Color picker for text customization
-- Auto-resizing text boxes based on content
-- Text justification (left, center, right)
-- Subscript and superscript support
-- Bold, italic, and underline formatting
+### Text Editing & Formatting
+- **Rich text boxes** - Insert and position text anywhere on slides
+- **Font customization** - Choose font family, style (bold, italic), and size
+- **Color picker** - Customize text colors
+- **Text formatting** - Bold, italic, underline support
+- **Auto-resizing** - Text boxes automatically adjust to content
+- **Right-click menu** - Quick access to formatting options
+- **Drag & drop** - Reposition text boxes by clicking and dragging
 
-### Image Handling
-- Insert images from file system via file chooser
-- Drag images to reposition on slides
-- Manual resize controls with width/height spinners
-- Maintains aspect ratio options
-- Supports common image formats (PNG, JPEG)
-- Image serialization with file path references
+### Image Management
+- **Image insertion** - Add images from file system
+- **Image positioning** - Drag images to reposition on slides
+- **Resize controls** - Adjust image dimensions with +/- buttons
+- **Format support** - PNG, JPEG, and other standard formats
+- **Persistent storage** - Image paths saved in presentation file
 
 ### Drawing Tools
-- Freehand pencil drawing mode
-- Geometric shapes: lines, circles, squares
-- Click-and-drag shape creation
-- Drag existing shapes to reposition
-- Eraser tool to remove drawn elements
-- Real-time shape preview during creation
-- Path-based drawing for smooth curves
+- **Geometric shapes** - Draw lines, circles, and squares
+- **Freehand drawing** - Pencil tool for freeform sketches
+- **Shape manipulation** - Click and drag to move shapes
+- **Eraser tool** - Remove drawn elements by dragging over them
+- **Real-time preview** - See shapes as you draw them
+- **Persistent drawings** - All drawings saved per slide
+
+### Presentation Mode
+- **Full-screen mode** - Present slides in full-screen view
+- **Slide scaling** - Automatic scaling to fit screen
+- **Keyboard controls** - Press ESC to exit presentation mode
+- **Live updates** - Changes reflect in presentation view
 
 ### File Operations
-- Save presentations to JSON format
-- Open existing presentations with full state restoration
-- Save As functionality for creating copies
-- Automatic serialization of:
-  - Text box positions, fonts, colors, and content
-  - Image positions, dimensions, and file paths
-  - All drawing elements (future enhancement)
-- Create new blank presentations
+- **Save presentations** - Save to JSON format with full state preservation
+- **Open presentations** - Load existing presentations with all content restored
+- **Save As** - Create copies of presentations
+- **Backward compatible** - Opens old single-slide format files
+- **Complete serialization** - Saves text, images, drawings, backgrounds, and notes
 
 ### User Interface
-- Vertical menu bar with categorized options
-- File, Edit, Home, Insert, Tools, Present, Help menus
-- Resize controls with increment/decrement spinners
-- Checkbox toggles for width/height resizing
-- Startup screen for project management
-- Modal dialogs for font and color selection
+- **Vertical menu bar** - Organized menu system (File, Edit, Home, Insert, Tools, Present, Help)
+- **Slide thumbnail panel** - Visual navigation on the left side
+- **Speaker notes** - Dedicated panel for presentation notes
+- **Resize controls** - Precise object resizing with spinners
+- **Startup screen** - Easy project creation and opening
+- **Modal dialogs** - Professional font and color selection dialogs
+
+---
+
+## Quick Start
+
+### Prerequisites
+- **Java Development Kit (JDK) 19** or newer
+- **Maven** (recommended) or manual compilation setup
+
+### Using Maven (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/acetrow/presentation-software.git
+cd presentation-software
+
+# Compile and run
+mvn clean compile exec:java -Dexec.mainClass="Driver"
+
+# Or build a JAR
+mvn clean package
+java -jar target/BytePitch-1.0-SNAPSHOT.jar
+```
+
+### Manual Compilation
+
+1. **Ensure JDK is installed:**
+   ```bash
+   java -version
+   ```
+
+2. **Download org.json library:**
+   - Download from [Maven Repository](https://mvnrepository.com/artifact/org.json/json)
+   - Place `json-20230618.jar` (or latest) in a `lib/` directory
+
+3. **Compile:**
+   ```bash
+   # Linux/Mac
+   cd src/main/java
+   javac -cp ".:../../lib/json-20230618.jar" *.java
+   
+   # Windows
+   cd src\main\java
+   javac -cp ".;..\..\lib\json-20230618.jar" *.java
+   ```
+
+4. **Run:**
+   ```bash
+   # Linux/Mac
+   java -cp ".:../../lib/json-20230618.jar" Driver
+   
+   # Windows
+   java -cp ".;..\..\lib\json-20230618.jar" Driver
+   ```
+
+---
+
+## Usage Guide
+
+### Creating a Presentation
+
+1. Launch the application - the startup screen appears
+2. Click **"Create new presentation"** or **"Open existing presentation"**
+3. The main editor opens with a blank slide
+
+### Working with Slides
+
+- **Add slide:** Click **"+ Slide"** button or go to **Home → New slide**
+- **Remove slide:** Click **"- Slide"** button or go to **Home → Remove Slide**
+- **Navigate slides:** 
+  - Use **<** and **>** buttons in the toolbar
+  - Click any thumbnail in the left panel
+  - Status shows "Slide X / Y"
+
+### Adding Content
+
+#### Text Boxes
+1. Go to **Insert → Insert Text Box**
+2. Click and drag to reposition
+3. Click inside to edit text
+4. **Right-click** for formatting options:
+   - Change Font
+   - Change Colour
+5. Use **Home** menu for bold, italic, underline
+
+#### Images
+1. Go to **Insert → Insert Image**
+2. Select image file from file chooser
+3. Drag to reposition
+4. Use resize controls:
+   - **+** button to enlarge
+   - **-** button to shrink
+   - Adjust increment with spinner
+   - Toggle Width/Height checkboxes
+
+#### Drawing Tools
+- **Lines:** Tools → Insert Line, then click and drag
+- **Circles:** Tools → Insert Circle, then click and drag
+- **Squares:** Tools → Insert Square, then click and drag
+- **Freehand:** Tools → Draw, then click and drag (toggle off by clicking Draw again)
+- **Eraser:** Tools → Erase, then drag over elements to remove
+
+### Formatting Text
+
+1. Select a text box (click on it)
+2. Use **Home** menu options:
+   - **Bold** - Toggle bold formatting
+   - **Italic** - Toggle italic formatting
+   - **Fonts** - Open font chooser dialog
+   - **Font Colour** - Open color picker
+   - **Justify Text** - Left, Center, or Right alignment
+
+### Saving and Opening
+
+**Save:**
+- **File → Save** (saves to current file)
+- **File → Save As** (choose new location)
+- Presentations saved as `.json` files
+
+**Open:**
+- **File → Open**
+- Select a `.json` presentation file
+- All slides, content, and formatting are restored
+
+### Presentation Mode
+
+1. Go to **Present → Present**
+2. Slides display in full-screen mode
+3. Press **ESC** to exit presentation mode
 
 ---
 
 ## Project Structure
 
-- `Driver.java` — Application entry point, launches startup screen
-- `StartupScreen.java` — Initial window for creating/opening presentations
-- `EditMenu.java` — Main editor window (JFrame) containing slide canvas and controls
-- `Slide.java` — Custom JPanel for slide content with drawing capabilities
-- `DraggablePanel.java` — Base class for draggable UI components
-- `SlideTextbox.java` — Editable text box component extending DraggablePanel
-- `SlideImage.java` — Image component with resize functionality
-- `SideMenu.java` — Vertical menu bar with all menu items and action listeners
-- `VerticalMenuBar.java` — Custom JMenuBar with vertical grid layout
-- `TextAttributes.java` — Popup menu for text formatting (font, color)
-- `JFontChooser.java` — Custom font selection dialog
-- `Notes.java` — Speaker notes panel component
-- `PresentingView.java` — Presentation mode view (future enhancement)
-- `ToolMenu.java` — Additional tools menu (placeholder)
-- `ExpandableButtonDrop.java` — Expandable dropdown button component (utility)
+```
+presentation-software/
+├── src/main/java/
+│   ├── Driver.java                 # Application entry point
+│   ├── StartupScreen.java          # Initial welcome screen
+│   ├── EditMenu.java               # Main editor window with multi-slide support
+│   ├── Slide.java                  # Slide canvas with drawing capabilities
+│   ├── SlideThumbnailPanel.java    # Thumbnail navigation panel
+│   ├── DraggablePanel.java         # Base class for draggable components
+│   ├── SlideTextbox.java           # Editable text box component
+│   ├── SlideImage.java             # Image component with resize
+│   ├── SideMenu.java               # Vertical menu bar with actions
+│   ├── VerticalMenuBar.java        # Custom vertical menu layout
+│   ├── TextAttributes.java         # Right-click formatting menu
+│   ├── JFontChooser.java           # Font selection dialog
+│   ├── Notes.java                  # Speaker notes panel
+│   └── PresentingView.java         # Full-screen presentation mode
+├── pom.xml                         # Maven configuration
+└── README.md                       # This file
+```
+
+### Key Components
+
+- **EditMenu** - Main application window managing slides, UI layout, and slide snapshots
+- **Slide** - Custom JPanel handling drawing, shapes, and component rendering
+- **SlideThumbnailPanel** - Left-side panel showing visual slide previews
+- **SideMenu** - Menu system with file operations, formatting, and tools
+- **SlideSnapshot** - Internal model for saving/loading slide state
 
 ---
 
-## Requirements
+## Technical Details
 
-Java Development Kit (JDK) 8 or newer
+### Architecture
 
-External Libraries:
-- org.json (JSON parsing and serialization)
+- **MVC-like pattern** - Separation between UI (EditMenu, Slide) and data (SlideSnapshot)
+- **Event-driven** - Action listeners for menu interactions
+- **Component-based** - DraggablePanel base class for reusable components
+- **State management** - Slide snapshots capture complete slide state
 
-Standard Java Libraries:
-- javax.swing (GUI components)
-- java.awt (Graphics and event handling)
-- java.io (File operations)
-- javax.imageio (Image loading)
+### JSON Format
 
----
+Presentations are saved in JSON format (v2) with the following structure:
 
-## Build and Run Instructions
-
-1. Clone the repository:
-   git clone https://github.com/acetrow/presentation-software.git
-   cd presentation-software
-
-2. Ensure JDK is installed:
-   java -version
-
-3. Download org.json library:
-   Download json-20240303.jar (or latest) from https://mvnrepository.com/artifact/org.json/json
-   Place in project lib/ directory
-
-4. Compile the project:
-   javac -cp ".:lib/json-20240303.jar" *.java
-
-   On Windows:
-   javac -cp ".;lib/json-20240303.jar" *.java
-
-5. Run the application:
-   java -cp ".:lib/json-20240303.jar" Driver
-
-   On Windows:
-   java -cp ".;lib/json-20240303.jar" Driver
-
----
-
-## Usage
-
-### Creating a New Presentation
-
-1. Launch the application using Driver.java
-2. Click "Create new presentation" on startup screen
-3. The main editor window opens with blank slide canvas
-
-### Adding Text Boxes
-
-1. Navigate to Insert → Insert Text Box
-2. A text box appears at default position (20, 20)
-3. Click and drag to reposition
-4. Click inside to edit text content
-5. Right-click for formatting options:
-   - Change Font (opens font chooser)
-   - Change Colour (opens color picker)
-
-### Inserting Images
-
-1. Navigate to Insert → Insert Image
-2. Select image file from file chooser dialog
-3. Image appears on slide with default dimensions
-4. Click and drag to reposition
-5. Use resize controls to adjust dimensions:
-   - Click + button to enlarge
-   - Click - button to shrink
-   - Set increment value with spinner
-   - Toggle Width/Height checkboxes
-
-### Using Drawing Tools
-
-Lines:
-1. Navigate to Tools → Insert Line
-2. Click and drag to create line
-3. Release to finalize
-
-Circles:
-1. Navigate to Tools → Insert Circle
-2. Click and drag to create circular shape
-3. Release to finalize
-
-Squares:
-1. Navigate to Tools → Insert Square
-2. Click and drag to create square
-3. Maintains equal width/height ratio
-
-Freehand Drawing:
-1. Navigate to Tools → Draw
-2. Click and drag to draw freehand paths
-3. Click Draw again to toggle off
-
-Eraser:
-1. Navigate to Tools → Erase
-2. Click and drag over elements to remove
-3. Works on lines, circles, squares, and paths
-
-### Saving and Opening
-
-Save:
-1. Navigate to File → Save (or Save As for first save)
-2. Choose location and filename in file dialog
-3. Presentation saved as .json file
-
-Open:
-1. Navigate to File → Open
-2. Select .json presentation file
-3. All text boxes, images, and formatting restored
-
----
-
-## Implementation Details
-
-### Drag-and-Drop System
-- MouseAdapter listeners on DraggablePanel base class
-- mousePressed captures initial click coordinates
-- mouseDragged calculates offset and updates component location
-- All slide elements inherit drag functionality
-
-### JSON Serialization Format
-
+```json
 {
-  "textBoxes": [
+  "version": 2,
+  "slides": [
     {
-      "xPosition": 20,
-      "yPosition": 50,
-      "fontName": "Arial",
-      "fontStyle": 0,
-      "fontSize": 14,
-      "content": "Sample text",
-      "colorRed": 0,
-      "colorGreen": 0,
-      "colorBlue": 0
-    }
-  ],
-  "images": [
-    {
-      "xPosition": 100,
-      "yPosition": 100,
-      "width": 200,
-      "height": 150,
-      "path": "/absolute/path/to/image.png"
+      "backgroundRed": 255,
+      "backgroundGreen": 255,
+      "backgroundBlue": 255,
+      "notes": "Speaker notes here",
+      "textBoxes": [
+        {
+          "xPosition": 20,
+          "yPosition": 50,
+          "width": 250,
+          "height": 100,
+          "fontName": "Arial",
+          "fontStyle": 1,
+          "fontSize": 14,
+          "content": "Sample text",
+          "colorRed": 0,
+          "colorGreen": 0,
+          "colorBlue": 0
+        }
+      ],
+      "images": [
+        {
+          "xPosition": 100,
+          "yPosition": 100,
+          "width": 200,
+          "height": 150,
+          "path": "/path/to/image.png"
+        }
+      ],
+      "drawings": {
+        "lines": [...],
+        "circles": [...],
+        "squares": [...],
+        "paths": [...]
+      }
     }
   ]
 }
+```
 
-### Drawing Architecture
-- Slide maintains ArrayLists for shapes: lines, circles, squares, paths
-- paintComponent() iterates and renders all shapes
-- Mouse listeners handle shape creation and manipulation
-- Graphics2D for smooth rendering
-- Shape selection and dragging via contains() checking
+The application is **backward compatible** with old single-slide JSON files.
 
-### Event Handling Pattern
-- Action listeners attached to menu items
-- Events propagate from SideMenu to EditMenu
-- EditMenu delegates to Slide for drawing operations
-- Observer pattern for UI updates
+### Drawing System
+
+- Shapes stored as Java2D objects (Line2D, Ellipse2D, Rectangle2D, Path2D)
+- Mouse listeners handle creation and manipulation
+- Graphics2D with antialiasing for smooth rendering
+- Shape selection via geometric contains() checking
+- Drawings serialized to JSON per slide
 
 ---
 
-## Known Limitations
+## Features Status
 
-- Drawing elements (lines, circles, squares, paths) are not yet serialized
-- Presentation mode (PresentingView) is incomplete
-- Single slide only - no multi-slide support
-- No undo/redo functionality implemented
-- Copy/paste features not implemented
-- Spell check menu item not functional
-- No animation or transition effects
-
----
-
-## Future Enhancements
-
-- Multi-slide presentations with slide navigation
-- Drawing element serialization to JSON
-- Full presentation mode with slide show controls
-- Undo/redo stack implementation
-- Clipboard operations (copy/paste)
+### Implemented
+- Multi-slide presentations
 - Slide thumbnails panel
-- Export to PDF or image formats
-- Animation effects and transitions
-- Collaborative editing features
+- Text formatting (bold, italic, fonts, colors)
+- Image insertion and manipulation
+- Drawing tools (lines, circles, squares, freehand)
+- Eraser tool
+- Presentation mode (full-screen)
+- Save/Open presentations
+- Drawing serialization
+- Speaker notes
+- Drag-and-drop positioning
+
+### Future Enhancements
+- Undo/redo functionality
+- Copy/paste operations
+- Spell checker
+- Table insertion
+- Code snippet insertion
+- Bullet point lists
+- Export to PDF/image formats
+- Slide transitions and animations
+- Collaborative editing
+
+---
+
+## Known Issues
+
+- Some menu items show "coming soon" messages (undo, redo, copy, paste, etc.)
+- Spell check not yet implemented
+- No table or code snippet insertion yet
 
 ---
 
 ## License
 
-This project is released under the MIT License.
+This project is released under the **MIT License**.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
+
+## Acknowledgments
+
+Built with Java Swing, demonstrating advanced GUI programming concepts, event handling, file I/O, and custom component design.

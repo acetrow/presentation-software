@@ -29,14 +29,15 @@ public class DraggablePanel extends JPanel {
 
 
     public DraggablePanel() {
+        setOpaque(false);
         addMouseListener(new MouseAdapter()
         {
             @Override
             public void mousePressed(MouseEvent mouse)
             {
-                // update cursor position on click
-                lastClickX = mouse.getLocationOnScreen().x;
-                lastClickY = mouse.getLocationOnScreen().y;
+                // Use relative coordinates instead of screen coordinates for better accuracy
+                lastClickX = mouse.getX();
+                lastClickY = mouse.getY();
 
                 // output position to terminal for debugging
                 // System.out.println("("+lastClickX+" "+lastClickY+")");
@@ -49,21 +50,26 @@ public class DraggablePanel extends JPanel {
             @Override
             public void mouseDragged(MouseEvent mouse)
             {
-                // We calculate how far the mouse has travelled in both directions since the mousePressed event
-                double xDiff = mouse.getLocationOnScreen().x - lastClickX;
-                double yDiff = mouse.getLocationOnScreen().y - lastClickY;
+                // Calculate the offset from the initial click position
+                double xDiff = mouse.getX() - lastClickX;
+                double yDiff = mouse.getY() - lastClickY;
 
-                // Update the initial mouse location (is this necessary?)
-
-                lastClickX = mouse.getLocationOnScreen().x;
-                lastClickY = mouse.getLocationOnScreen().y;
-
-                // Calculate (as an integer) the new position of the draggable panel by adding the
-                // mouse offset to the object's position
-
+                // Calculate the new position relative to parent
+                Point parentLocation = getParent() != null ? getParent().getLocationOnScreen() : new Point(0, 0);
+                Point currentLocation = getLocationOnScreen();
+                
                 int newPosX = (int)(getLocation().x + xDiff);
                 int newPosY = (int)(getLocation().y + yDiff);
-                setLocation(newPosX,newPosY);
+                
+                // Ensure the component stays within bounds of parent
+                if (getParent() != null) {
+                    int maxX = getParent().getWidth() - getWidth();
+                    int maxY = getParent().getHeight() - getHeight();
+                    newPosX = Math.max(0, Math.min(newPosX, maxX));
+                    newPosY = Math.max(0, Math.min(newPosY, maxY));
+                }
+                
+                setLocation(newPosX, newPosY);
 
                 // Output the new location to terminal for debugging
                 // System.out.println(getLocation());

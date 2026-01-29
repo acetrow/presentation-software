@@ -66,10 +66,11 @@ public class SlideImage extends DraggablePanel {
     {
         this.file = path;
         try {
-            // String filepath = new File("").getAbsolutePath();
-            // System.out.println(filepath);
-            // filepath = filepath + "/src/images/"+fileName;
             image = ImageIO.read(path);
+            
+            if (image == null) {
+                throw new Exception("Failed to load image from: " + path.getAbsolutePath());
+            }
 
             ImageObserver observer = new ImageObserver() {
                 @Override
@@ -78,24 +79,36 @@ public class SlideImage extends DraggablePanel {
                 }
             };
 
-            image = ImageIO.read(path);
-            width = image.getWidth(observer);
-            System.out.println(width);
-            height = image.getHeight(observer);
+            // Use provided dimensions if valid, otherwise use image's natural size
+            if (newWidth > 0 && newHeight > 0) {
+                width = newWidth;
+                height = newHeight;
+            } else {
+                width = image.getWidth(observer);
+                height = image.getHeight(observer);
+            }
+            
             picture = new JLabel(
                     new ImageIcon(
-                            image.getScaledInstance((int)width - 10, (int)height - 10, 1)
+                            image.getScaledInstance((int)width, (int)height, Image.SCALE_SMOOTH)
                     )
             );
             setSize((int)width, (int)height);
-            add(picture);
+            setLayout(new BorderLayout());
+            add(picture, BorderLayout.CENTER);
         }
         catch (Exception e)
         {
-            System.out.println(e);
+            System.err.println("Error loading image: " + e.getMessage());
+            e.printStackTrace();
+            // Create a placeholder label if image fails to load
+            JLabel errorLabel = new JLabel("Image not found");
+            errorLabel.setForeground(Color.RED);
+            add(errorLabel);
+            width = 200;
+            height = 200;
+            setSize((int)width, (int)height);
         }
-
-        // Listener for when the image is resized
     }
 
     public void addCaption(String captionText)
